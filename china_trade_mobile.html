@@ -160,12 +160,7 @@ function showProvCust(shortName){
     });
     c.off('click');c.on('click',function(p){if(!p.name)return;var d=PROV_CUST[p.name];if(!d||!d.customers.length){document.getElementById('prov-title').textContent=p.name+' (暂无客户明细)';document.getElementById('prov-tbody').innerHTML='<tr><td colspan=4 style=text-align:center;color:var(--text-dim)>该省份客户归属未识别，可能在"其他"分类中</td></tr>';document.getElementById('prov-modal').classList.add('show');return;}var tot=0;d.customers.forEach(function(cu){tot+=cu.t;});tot=Math.round(tot*10)/10;var rows=d.customers.map(function(cu,i){var pct=tot>0?(cu.t/tot*100).toFixed(1):'0.0';return'<tr><td>'+(i+1)+'</td><td>'+cu.n+'</td><td>¥'+cu.t+'万</td><td>'+pct+'%</td></tr>';}).join('');document.getElementById('prov-title').textContent=p.name+' (总计¥'+tot+'万, '+d.customers.length+'家客户)';document.getElementById('prov-tbody').innerHTML=rows;document.getElementById('prov-modal').classList.add('show');});
   }
-fetch('./100000_full.json')   // 从当前目录加载本地文件
-  .then(function(r) { return r.json(); })
-  .then(function(geo) { echarts.registerMap('china', geo); renderMap(); })
-  .catch(function(error) {
-    console.error('地图加载失败：', error);
-  });
+  fetch('./100000_full.json').then(function(r){return r.json();}).then(function(geo){echarts.registerMap('china',geo);renderMap();}).catch(function(){c.setOption({title:{text:'中国地图加载中...',left:'center',top:'45%',textStyle:{color:'#5a6f8a',fontSize:14}}});});
 })();
 </script>
 </body>
